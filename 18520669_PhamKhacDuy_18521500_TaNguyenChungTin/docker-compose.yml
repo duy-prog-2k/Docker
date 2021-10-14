@@ -1,0 +1,37 @@
+version: "3.3"
+services:
+  node0:
+    container_name: node0
+    restart: always
+    build:
+      context: ./iperf-server
+    networks: 
+      iot_net:
+        ipv4_address: 172.30.0.10
+
+  node1:
+    container_name: node1
+    restart: always
+    build:
+      context: ./iperf-client
+    networks:
+      iot_net: 
+        ipv4_address: 172.30.0.11
+      
+  node2:
+    container_name: node2
+    restart: always
+    build:
+      context: ./iperf-client
+    networks:
+      iot_net: 
+        ipv4_address: 172.30.0.12
+
+networks:
+  iot_net:
+    driver: bridge
+    name: iot_net
+    ipam:
+      config:
+        - subnet: "172.30.0.0/24"
+          gateway: "172.30.0.1"
